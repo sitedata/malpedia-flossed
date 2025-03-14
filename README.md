@@ -84,7 +84,7 @@ The service supports single lookups as GET requests and multi-lookups as POST re
 $ curl https://strings.malpedia.io/api/query/FIXME  
 {"status": "successful", "data": [{"encodings": ["ASCII"], "families": ["win.kins", "win.vmzeus", "win.zeus_sphinx", "win.citadel", "win.ice_ix", "win.murofet", "win.zeus"], "family_count": 7, "methods": ["static"], "string": "FIXME", "tags": [], "matched": true}, {"matched": false, "string": "NOT_FLOSSED"}]}
 
-$ curl -X POST https://strings.malpedia.io/api/query/ --data '"FIXME","NOT_IN_THE_DATABASE"'
+$ curl -X POST https://strings.malpedia.io/api/query --data '"FIXME","NOT_IN_THE_DATABASE"'
 {"status": "successful", "data": [{"encodings": ["ASCII"], "families": ["win.kins", "win.vmzeus", "win.zeus_sphinx", "win.citadel", "win.ice_ix", "win.murofet", "win.zeus"], "family_count": 7, "methods": ["static"], "string": "FIXME", "tags": [], "matched": true}, {"matched": false, "string": "NOT_IN_THE_DATABASE"}]}
 ```
 Check out the [demo Python script](https://github.com/malpedia/malpedia-flossed/blob/main/demo_webservice.py) for how to interact with the service.
@@ -95,6 +95,8 @@ Here is some [documentation](docs/webservice.md) for the webservice.
 
 ## Plugin(s)
 
+### GUI plugin for IDA, Ghidra, Binary Ninja
+
 A good use case for this collection of strings is probably in binary analysis tools, so we build an plugin compatible with IDA Pro, Ghidra, and Binary Ninja that demonstrates this:
 
 <img src="IdaMalpediaFlossed.png" alt="Screenshot of the IDA plugin" width="1500">
@@ -102,8 +104,18 @@ A good use case for this collection of strings is probably in binary analysis to
 In order to work with all three platforms at once, we use the [gui-plugin-template](https://github.com/danielplohmann/gui-plugin-template), which is based off [hyara](https://github.com/hyuunnn/Hyara).  
 Here is some [documentation](docs/plugin.md) for the plugin, explaining how to install and configure it.
 
+### Plugin for Malcat
+
+We added an intelligence plugin for Malcat that looks up all strings in the given binary and renders the results in a custom Kesakode result.
+
+To install, just place the file found at `./plugins/malcat/MalpediaFlossed.py` into the ` data/intelligence` folder of Malcat.  
+By default, the public [strings.malpedia.io](https://strings.malpedia.io) instance is used for lookups but you can also define your own endpoint.
+
+<img src="MalcatMalpediaFlossed.png" alt="Screenshot of the Malcat plugin" width="1500">
+
 ## Version
 
+* 2025-03-14 v1.6 - Added a Kesakode plugin for Malcat.
 * 2024-03-08 v1.5 - Rewrote plugin to work with IDA Pro, Ghidra, and Binary Ninja at once.
 * 2024-02-21 v1.4 - Addressing issues with log file writing.
 * 2024-02-13 v1.3 - Web service now renders HTML results.
