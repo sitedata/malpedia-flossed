@@ -41,7 +41,7 @@ class MalpediaFlossed(OnlineChecker):
     def kesakode(self, analysis, fuzzy_matching=False):
         result = KesakodeExternalResult() 
 
-        query_string = ",".join(f"\"{string}\"" for string in analysis.strings)
+        query_string = ",".join(f"\"{string}\"" for string in analysis.strings if (len(string) < 0x1000 and string.score > 80))
         response = requests.post(f"{URL}", data=query_string, verify=self.options.get("ssl_verify", True))
         response_data = {}
         results_by_string = {}
